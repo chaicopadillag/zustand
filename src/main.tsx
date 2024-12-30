@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import App from './App.tsx';
 import './index.css';
 import DashboardLayout from './layouts/dashboard.layout.tsx';
-import { DashboardPage } from './pages/dashboard/dashboard.page.tsx';
 import BearPage from './pages/dashboard/bear.page.tsx';
+import { DashboardPage } from './pages/dashboard/dashboard.page.tsx';
+import { JiraPage } from './pages/dashboard/jira-page.tsx';
 import { PersonPage } from './pages/dashboard/person.page.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -17,6 +18,7 @@ createRoot(document.getElementById('root')!).render(
           <Route index element={<DashboardPage />} />
           <Route path='bear' element={<BearPage />} />
           <Route path='person' element={<PersonPage />} />
+          <Route path='tasks' element={<JiraPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

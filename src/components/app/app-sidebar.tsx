@@ -8,9 +8,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar';
-import { Home, Search, Settings } from 'lucide-react';
-import { IoPerson } from 'react-icons/io5';
+import { Home, Settings } from 'lucide-react';
+import { FaTasks } from 'react-icons/fa';
 import { GiBearFace } from 'react-icons/gi';
+import { IoPerson } from 'react-icons/io5';
 import { Link } from 'react-router';
 
 // Menu items.
@@ -31,9 +32,9 @@ const items = [
     icon: IoPerson
   },
   {
-    title: 'Search',
-    url: '#',
-    icon: Search
+    title: 'Tareas',
+    url: '/dashboard/tasks',
+    icon: FaTasks
   },
   {
     title: 'Settings',
