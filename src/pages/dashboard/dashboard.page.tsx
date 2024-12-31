@@ -1,9 +1,14 @@
 import { WhiteCard } from '@/components/app/white-card';
 import { useBearStore } from '@/stores/bears.store';
+import { usePersonStore } from '@/stores/person.store';
+import { useTaskStore } from '@/stores/task.store';
 import { IoAccessibilityOutline, IoHeartOutline, IoListOutline, IoLockClosedOutline, IoPawOutline } from 'react-icons/io5';
+import { useShallow } from 'zustand/react/shallow';
 
 export const DashboardPage = () => {
   const totalBears = useBearStore((state) => state.totalBears);
+  const firstName = usePersonStore((state) => state.firstName);
+  const totalTasks = useTaskStore(useShallow((state) => state.getTotalTasks()));
 
   return (
     <>
@@ -21,13 +26,13 @@ export const DashboardPage = () => {
         <WhiteCard centered>
           <IoAccessibilityOutline size={50} className='text-indigo-600' />
           <h2>Persona</h2>
-          <p>Información</p>
+          <p>{firstName}</p>
         </WhiteCard>
 
         <WhiteCard centered>
           <IoListOutline size={50} className='text-indigo-600' />
           <h2>Tareas</h2>
-          <p>Información</p>
+          <p>{totalTasks}</p>
         </WhiteCard>
 
         <WhiteCard centered>

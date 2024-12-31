@@ -1,5 +1,5 @@
 import { create, StateCreator } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 export type TaskStatus = 'pending' | 'done' | 'in-progress';
@@ -18,6 +18,7 @@ type TaskState = {
   removeDragTaskId: () => void;
   changeTaskStatus: (status: TaskStatus) => void;
   addTask: (task: Task) => void;
+  getTotalTasks: () => number;
 };
 
 const stateApi: StateCreator<TaskState, [['zustand/immer', never]]> = (set, get) => ({
@@ -66,7 +67,8 @@ const stateApi: StateCreator<TaskState, [['zustand/immer', never]]> = (set, get)
   addTask: (task) =>
     set((state) => {
       state.tasks[task.id] = task;
-    })
+    }),
+  getTotalTasks: () => Object.keys(get().tasks).length
 });
 
-export const useTaskStore = create<TaskState>()(devtools(immer(stateApi)));
+export const useTaskStore = create<TaskState>()(devtools(persist(immer(stateApi), { name: 'task-store' })));

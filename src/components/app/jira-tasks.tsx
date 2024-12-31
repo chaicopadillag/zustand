@@ -1,9 +1,7 @@
+import { useTask } from '@/hooks/use-task';
 import { cn } from '@/lib/utils';
-import { type Task, type TaskStatus, useTaskStore } from '@/stores/task.store';
-import { DragEvent, useState } from 'react';
+import { type Task, type TaskStatus } from '@/stores/task.store';
 import { IoAdd, IoCheckmarkCircleOutline } from 'react-icons/io5';
-import Swal from 'sweetalert2';
-import { v4 as uuid } from 'uuid';
 import { Button } from '../ui/button';
 import { TaskItem } from './task-item';
 
@@ -14,56 +12,13 @@ interface Props {
 }
 
 export const JiraTasks = ({ title, status, tasks }: Props) => {
-  const [onDraggable, setOnDraggable] = useState(false);
-  const isDragging = useTaskStore((state) => !!state.dragTaskId);
-  const changeTaskStatus = useTaskStore((state) => state.changeTaskStatus);
-  const addTask = useTaskStore((state) => state.addTask);
-
-  const handleAddTask = async () => {
-    const newTask = await Swal.fire({
-      title: 'Add New Task',
-      input: 'text',
-      inputLabel: 'Task Title',
-      inputPlaceholder: 'Enter your task title',
-      showCancelButton: true,
-      confirmButtonText: 'Add Task',
-      cancelButtonText: 'Cancel'
-    });
-
-    if (newTask.isDismissed) return;
-
-    const title = newTask.value;
-    if (!title) return;
-
-    const task: Task = {
-      id: uuid(),
-      title,
-      status
-    };
-    addTask(task);
-  };
-
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setOnDraggable(true);
-  };
-
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setOnDraggable(false);
-  };
-
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setOnDraggable(false);
-    changeTaskStatus(status);
-  };
+  const { onDraggable, isDragging, handleAddTask, handleDragOver, handleDragLeave, handleDrop } = useTask();
 
   return (
     <div
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
+      onDrop={(event) => handleDrop(event, status)}
       className={cn(
         '!text-black relative flex flex-col rounded-[20px] bg-gray-100 bg-clip-border shadow-3xl shadow-shadow-500  w-full !p-4 3xl:p-![18px] border-2',
         {
@@ -84,7 +39,7 @@ export const JiraTasks = ({ title, status, tasks }: Props) => {
           <h4 className='ml-4 text-xl font-bold text-gray-700'>{title}</h4>
         </div>
 
-        <Button size='icon' onClick={handleAddTask}>
+        <Button size='icon' onClick={() => handleAddTask(status)}>
           <IoAdd />
         </Button>
       </div>
