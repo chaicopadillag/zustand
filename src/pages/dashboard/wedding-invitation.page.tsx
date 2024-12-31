@@ -5,9 +5,20 @@ import { useWeddingStore } from '@/stores/wedding';
 import { useShallow } from 'zustand/react/shallow';
 
 export const WeddingInvitationPage = () => {
-  const { firstName, lastName, setFirstName, setLastName, guestCount, setGuestCount, getDate, getTime, setEventDate, setEventTime } = useWeddingStore(
-    useShallow((state) => state)
-  );
+  const {
+    firstName,
+    lastName,
+    setFirstName,
+    setLastName,
+    guestCount,
+    setGuestCount,
+    getDate,
+    getTime,
+    setEventDate,
+    setEventTime,
+    isConfirmed,
+    setConfirmed
+  } = useWeddingStore(useShallow((state) => state));
 
   return (
     <>
@@ -79,11 +90,25 @@ export const WeddingInvitationPage = () => {
               <label className='mb-3 block text-base font-medium text-[#07074D]'>¿Tu también vendrás?</label>
               <div className='flex items-center space-x-6'>
                 <div className='flex items-center'>
-                  <Input type='radio' name='isComing' id='radioButton1' className='h-5 w-5' />
+                  <Input
+                    checked={isConfirmed}
+                    onChange={() => setConfirmed(true)}
+                    type='radio'
+                    name='isComing'
+                    id='radioButton1'
+                    className='h-5 w-5'
+                  />
                   <label className='pl-3 text-base font-medium text-[#07074D]'>Si</label>
                 </div>
                 <div className='flex items-center'>
-                  <Input type='radio' name='isComing' id='radioButton2' className='h-5 w-5' />
+                  <Input
+                    checked={!isConfirmed}
+                    onChange={() => setConfirmed(false)}
+                    type='radio'
+                    name='isComing'
+                    id='radioButton2'
+                    className='h-5 w-5'
+                  />
                   <label className='pl-3 text-base font-medium text-[#07074D]'>No</label>
                 </div>
               </div>
