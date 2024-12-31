@@ -8,6 +8,7 @@ import BearPage from './pages/dashboard/bear.page.tsx';
 import { DashboardPage } from './pages/dashboard/dashboard.page.tsx';
 import { JiraPage } from './pages/dashboard/jira-page.tsx';
 import { PersonPage } from './pages/dashboard/person.page.tsx';
+import { WeddingInvitationPage } from './pages/dashboard/wedding-invitation.page.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path='bear' element={<BearPage />} />
           <Route path='person' element={<PersonPage />} />
           <Route path='tasks' element={<JiraPage />} />
+          <Route path='wedding-invitation' element={<WeddingInvitationPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

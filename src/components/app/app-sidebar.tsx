@@ -8,10 +8,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/components/ui/sidebar';
-import { Home, Settings } from 'lucide-react';
+import { Home } from 'lucide-react';
 import { FaTasks } from 'react-icons/fa';
 import { GiBearFace } from 'react-icons/gi';
-import { IoPerson } from 'react-icons/io5';
+import { IoHeartOutline, IoPerson } from 'react-icons/io5';
 import { Link } from 'react-router';
 
 // Menu items.
@@ -37,9 +37,9 @@ const items = [
     icon: FaTasks
   },
   {
-    title: 'Settings',
-    url: '#',
-    icon: Settings
+    title: 'Boda',
+    url: 'wedding-invitation',
+    icon: IoHeartOutline
   }
 ];
 
