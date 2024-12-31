@@ -1,5 +1,6 @@
 import { create, StateCreator } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
 
 export type TaskStatus = 'pending' | 'done' | 'in-progress';
 
@@ -16,9 +17,10 @@ type TaskState = {
   setDragTaskId: (id: string) => void;
   removeDragTaskId: () => void;
   changeTaskStatus: (status: TaskStatus) => void;
+  addTask: (task: Task) => void;
 };
 
-const stateApi: StateCreator<TaskState> = (set, get) => ({
+const stateApi: StateCreator<TaskState, [['zustand/immer', never]]> = (set, get) => ({
   tasks: {
     'e303e0d4-cf61-4b6b-b657-841535959d27': {
       id: 'e303e0d4-cf61-4b6b-b657-841535959d27',
@@ -52,18 +54,19 @@ const stateApi: StateCreator<TaskState> = (set, get) => ({
     if (!dragTaskId) return;
     const dragTask = get().tasks[dragTaskId];
 
-    set((state) => ({
-      tasks: {
-        ...state.tasks,
-        [dragTaskId]: {
-          ...dragTask,
-          status
-        }
-      }
-    }));
+    set((state) => {
+      state.tasks[dragTaskId] = {
+        ...dragTask,
+        status
+      };
+    });
 
     get().removeDragTaskId();
-  }
+  },
+  addTask: (task) =>
+    set((state) => {
+      state.tasks[task.id] = task;
+    })
 });
 
-export const useTaskStore = create<TaskState>()(devtools(stateApi));
+export const useTaskStore = create<TaskState>()(devtools(immer(stateApi)));
