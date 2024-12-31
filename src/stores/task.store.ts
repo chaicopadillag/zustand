@@ -15,6 +15,7 @@ type TaskState = {
   getTaskByStatus: (status: TaskStatus) => Task[];
   setDragTaskId: (id: string) => void;
   removeDragTaskId: () => void;
+  changeTaskStatus: (status: TaskStatus) => void;
 };
 
 const stateApi: StateCreator<TaskState> = (set, get) => ({
@@ -45,7 +46,24 @@ const stateApi: StateCreator<TaskState> = (set, get) => ({
     return Object.values(get().tasks).filter((task) => task.status === status);
   },
   setDragTaskId: (id) => set({ dragTaskId: id }),
-  removeDragTaskId: () => set({ dragTaskId: null })
+  removeDragTaskId: () => set({ dragTaskId: null }),
+  changeTaskStatus: (status) => {
+    const dragTaskId = get().dragTaskId;
+    if (!dragTaskId) return;
+    const dragTask = get().tasks[dragTaskId];
+
+    set((state) => ({
+      tasks: {
+        ...state.tasks,
+        [dragTaskId]: {
+          ...dragTask,
+          status
+        }
+      }
+    }));
+
+    get().removeDragTaskId();
+  }
 });
 
 export const useTaskStore = create<TaskState>()(devtools(stateApi));
