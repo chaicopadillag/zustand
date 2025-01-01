@@ -1,7 +1,12 @@
+import { Link } from 'react-router';
 import { Button } from './components/ui/button';
 
 function App() {
-  return <Button>Click me</Button>;
+  return (
+    <Button asChild>
+      <Link to='/auth/login'>Login</Link>
+    </Button>
+  );
 }
 
 export default App;

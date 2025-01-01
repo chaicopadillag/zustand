@@ -1,5 +1,6 @@
 import { create, StateCreator } from 'zustand';
 import { createJSONStorage, devtools, persist, StateStorage } from 'zustand/middleware';
+import { useWeddingStore } from './wedding';
 
 type PersonState = {
   firstName: string;
@@ -35,3 +36,8 @@ export const usePersonStore = create<PersonState>()(
     })
   )
 );
+
+usePersonStore.subscribe(({ firstName, lastName }) => {
+  useWeddingStore.getState().setFirstName(firstName);
+  useWeddingStore.getState().setLastName(lastName);
+});

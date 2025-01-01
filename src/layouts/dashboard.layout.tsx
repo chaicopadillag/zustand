@@ -2,9 +2,34 @@ import { AppSidebar } from '@/components/app/app-sidebar';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { Outlet } from 'react-router';
+import { AuthService } from '@/services/auth.service';
+import { useAuthStore } from '@/stores/auth';
+import { useCallback } from 'react';
+import { Navigate, Outlet } from 'react-router';
 
 export default function DashboardLayout() {
+  const { authStatus, setAuthUser, setUnauthenticated } = useAuthStore((state) => state);
+
+  const authCheckStatus = useCallback(async () => {
+    try {
+      const authUser = await AuthService.getAuthUser();
+      setAuthUser(authUser);
+    } catch (error) {
+      console.error(error);
+      setUnauthenticated();
+      throw Error('Unauthorized');
+    }
+  }, [setAuthUser, setUnauthenticated]);
+
+  if (authStatus === 'loading') {
+    authCheckStatus().then();
+    return <div>Loading...</div>;
+  }
+
+  if (authStatus === 'unauthenticated') {
+    return <Navigate to='/auth/login' />;
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />

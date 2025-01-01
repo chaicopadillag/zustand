@@ -1,4 +1,6 @@
+import { InformationPrivate } from '@/components/app/information';
 import { WhiteCard } from '@/components/app/white-card';
+import { useAuthStore } from '@/stores/auth';
 import { useBearStore } from '@/stores/bears.store';
 import { usePersonStore } from '@/stores/person.store';
 import { useTaskStore } from '@/stores/task.store';
@@ -9,6 +11,7 @@ export const DashboardPage = () => {
   const totalBears = useBearStore((state) => state.totalBears);
   const firstName = usePersonStore((state) => state.firstName);
   const totalTasks = useTaskStore(useShallow((state) => state.getTotalTasks()));
+  const { authStatus, authUser } = useAuthStore((state) => state);
 
   return (
     <>
@@ -44,7 +47,10 @@ export const DashboardPage = () => {
         <WhiteCard centered>
           <IoLockClosedOutline size={50} className='text-indigo-600' />
           <h2>Auth</h2>
-          <p>Información</p>
+          {authStatus === 'authenticated' && <p>{authUser?.fullName}</p>}
+        </WhiteCard>
+        <WhiteCard centered className='col-span-4'>
+          <InformationPrivate />
         </WhiteCard>
       </div>
     </>
